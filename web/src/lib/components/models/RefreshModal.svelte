@@ -1,7 +1,6 @@
 <script lang="ts">
   import { invalidate, invalidateAll } from "$app/navigation";
 
-  let dialogTag: HTMLDialogElement;
   let isProcessing = false;
   
   const handleRefresh = async (e: Event) => {
@@ -13,7 +12,6 @@
   
       if (r.ok) {
         await invalidate("/api/model/all");
-        dialogTag.close();
       } else {
         console.error("Error refreshing models");
       }

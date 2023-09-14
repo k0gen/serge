@@ -25,6 +25,7 @@
       });
     });
   };
+</script>
 <dialog bind:this={dialogTag} class="modal">
   <form method="dialog" class="modal-box">
     <button class="btn-ghost btn-sm btn-circle btn absolute right-2 top-2"

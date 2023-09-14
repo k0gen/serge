@@ -3,7 +3,7 @@
 
   let isProcessing = false;
   
-  const handleRefresh = (e: Event) => {
+  const handleRefresh = (e) => {
     isProcessing = true;
     new Promise((resolve, reject) => {
       fetch("/api/model/refresh", {

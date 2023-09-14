@@ -3,20 +3,28 @@
 
   let isProcessing = false;
   
-  const handleRefresh = async (e: Event) => {
-      isProcessing = true;
-      const r = await fetch("/api/model/refresh", {
+  const handleRefresh = (e: Event) => {
+    isProcessing = true;
+    new Promise((resolve, reject) => {
+      fetch("/api/model/refresh", {
         method: "POST",
         body: new FormData(e.target as HTMLFormElement),
+      })
+      .then(r => {
+        if (r.ok) {
+          return invalidate("/api/model/all");
+        } else {
+          throw new Error("Error refreshing models");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
+        isProcessing = false;
       });
-  
-      if (r.ok) {
-        await invalidate("/api/model/all");
-      } else {
-        console.error("Error refreshing models");
-      }
-      isProcessing = false;
-    };
+    });
+  };
 <dialog bind:this={dialogTag} class="modal">
   <form method="dialog" class="modal-box">
     <button class="btn-ghost btn-sm btn-circle btn absolute right-2 top-2"

@@ -66,17 +66,17 @@
 
   async function askQuestion() {
     const data = new URLSearchParams();
-
+  
     if (!prompt || prompt === "") {
       prompt = "Reformulate your last answer.";
     }
-
+  
     data.append("prompt", prompt);
-
+  
     const eventSource = new EventSource(
       "/api/chat/" + $page.params.id + "/question?" + data.toString(),
     );
-
+  
     history = [
       ...history,
       {
@@ -92,18 +92,19 @@
         },
       },
     ];
-
+  
     prompt = "";
-
+  
     eventSource.addEventListener("message", (event) => {
       history[history.length - 1].data.content += event.data;
     });
-
+  
     eventSource.addEventListener("close", async () => {
       eventSource.close();
       await invalidate("/api/chat/" + $page.params.id);
+      prompt = "";
     });
-
+  
     eventSource.onerror = async (error) => {
       console.log("error", error);
       eventSource.close();
@@ -114,6 +115,7 @@
 
   async function handleKeyDown(event: KeyboardEvent) {
     if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
       await askQuestion();
     }
   }

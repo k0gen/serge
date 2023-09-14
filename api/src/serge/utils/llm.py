@@ -6,6 +6,14 @@ from pydantic import Extra, Field, root_validator
 
 
 class LlamaCpp(LLM):
+    def start_process(self):
+        # Emit an event or call a callback function
+        pass
+
+    def end_process(self):
+        # Emit an event or call a callback function
+        pass
+
     """Wrapper around the llama.cpp model.
 
     To use, you should have the llama-cpp-python library installed, and provide the
@@ -148,24 +156,26 @@ class LlamaCpp(LLM):
         return "llama.cpp"
 
     def _call(self, prompt: str, stop: list[str] | None = None) -> str:
-        """Call the Llama model and return the output.
+        self.start_process()
 
-        Args:
-            prompt: The prompt to use for generation.
-            stop: A list of strings to stop generation when encountered.
-
-        Returns:
-            The generated text.
-
-        Example:
-            .. code-block:: python
-
-                from langchain.llms import LlamaCppEmbeddings
-                llm = LlamaCppEmbeddings(model_path="/path/to/local/llama/model.bin")
-                llm("This is a prompt.")
-        """
         from llama_cpp import Llama
 
+        params = self._identifying_params
+        client = Llama(
+            model_path="/usr/src/app/weights/" + self.model_path + ".bin",
+            n_ctx=self.n_ctx,
+            n_gpu_layers=self.n_gpu_layers,
+            n_gqa=self.n_gqa if self.n_gqa else None,
+            n_parts=self.n_parts,
+            seed=self.seed,
+            f16_kv=self.f16_kv,
+            logits_all=self.logits_all,
+            vocab_only=self.vocab_only,
+            use_mlock=self.use_mlock,
+            n_threads=self.n_threads,
+            n_batch=self.n_batch,
+            last_n_tokens_size=self.last_n_tokens_size,
+        )
         params = self._identifying_params
         client = Llama(
             model_path="/usr/src/app/weights/" + self.model_path + ".bin",
@@ -230,12 +240,13 @@ class LlamaCpp(LLM):
             )
             text = output["choices"][0]["text"]
 
+            self.end_process()
+
             return text
 
 
 if __name__ == "__main__":
     from langchain.callbacks.base import CallbackManager
-
     from serge.utils.stream import ChainRedisHandler
 
     llm = LlamaCpp(

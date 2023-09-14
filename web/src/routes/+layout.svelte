@@ -16,14 +16,14 @@
   let dataCht: Response | any = null;
   const unsubscribe = barVisible.subscribe((value) => (bar_visible = value));
   const unsubscribe1 = newChat.subscribe((value) => (dataCht = value));
-
+  
   onMount(() => {
     bar_visible = window.innerWidth > 768;
     barVisible.set(bar_visible);
     theme = localStorage.getItem("data-theme") || "dark";
     document.documentElement.setAttribute("data-theme", theme);
   });
-
+  
   $: id = $page.params.id || "";
   async function deleteChat(chatID: string) {
     const response = await fetch("/api/chat/" + chatID, { method: "DELETE" });
@@ -35,7 +35,7 @@
       console.error("Error " + response.status + ": " + response.statusText);
     }
   }
-
+  
   async function deleteAllChat() {
     const response = await fetch("/api/chat/delete/all", { method: "DELETE" });
     if (response.status === 200) {
@@ -46,21 +46,21 @@
       console.error("Error " + response.status + ": " + response.statusText);
     }
   }
-
+  
   function toggleDeleteConfirm() {
     deleteConfirm = !deleteConfirm;
   }
-
+  
   function toggleDeleteAllConfirm() {
     deleteAllConfirm = !deleteAllConfirm;
   }
-
+  
   function timeSince(datestring: string) {
     const date = new Date(datestring);
     const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
-
+  
     let interval = seconds / 31536000;
-
+  
     if (interval > 1) {
       return Math.floor(interval) + " years";
     }
@@ -82,24 +82,22 @@
     }
     return Math.floor(seconds) + " seconds";
   }
-
+  
   function truncate(str: string, n: number) {
     return str.length > n ? str.slice(0, n - 1) + "..." : str;
   }
-
+  
   function toggleTheme() {
     $themeStore = $themeStore === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", $themeStore);
     localStorage.setItem("data-theme", $themeStore);
   }
-
+  
   function toggleBar() {
       bar_visible = !bar_visible;
       barVisible.set(bar_visible);
-      // Assuming modelSettingsVisible is the Svelte reactive statement controlling the visibility of the "Model Settings" section
-      modelSettingsVisible.set(bar_visible);
   }
-
+  
   async function createSameSession() {
     if (dataCht) {
       const newData = await fetch(
@@ -108,7 +106,7 @@
           `&repeat_last_n=${dataCht.params.last_n_tokens_size}&repeat_penalty=${dataCht.params.repeat_penalty}` +
           `&n_threads=${dataCht.params.n_threads}&init_prompt=${dataCht.history[0].data.content}` +
           `&gpu_layers=${dataCht.params.n_gpu_layers}&n_gqa=${dataCht.params.n_gqa}`,
-
+  
         {
           method: "POST",
           headers: {
@@ -120,12 +118,12 @@
       await goto("/chat/" + newData);
     }
   }
-
+  
   onDestroy(() => {
     unsubscribe;
     unsubscribe1;
   });
-  // onDestroy(unsubscribe1);
+  // onDestroy(unsubscribe1)
 </script>
 
 <aside
@@ -161,7 +159,7 @@
       </button>
       <button
           class="btn btn-ghost flex h-6 w-1/6 items-center justify-center font-semibold z-40"
-          on:click={toggleBar} // This now also toggles the visibility of the "Model Settings" section
+          on:click={toggleBar}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

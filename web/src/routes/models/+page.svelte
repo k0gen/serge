@@ -100,13 +100,11 @@
 <h1 class="pb-5 pt-2 text-center text-xl font-light">
   Make sure you have enough disk space and available RAM to run them.<br />
   7B requires about 4.5GB of free RAM, 13B requires about 12GB free, 30B requires
-  about 20GB free
-</h1>
-
-<div class="mx-auto w-fit">
-  <RefreshModal />
-</div>
-
+  second line before
+  first line before
+  new code
+  first line after
+  second line after
 <div class="mt-30 mx-auto flex flex-col">
   <div class="mx-auto w-full max-w-4xl">
     <div class="divider" />

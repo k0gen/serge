@@ -51,11 +51,8 @@
 import os
 import struct
 
-
 QK = 32
 
-GGML_TYPE_Q4_0 = 0
-GGML_TYPE_Q4_1 = 1
 GGML_TYPE_I8 = 2
 GGML_TYPE_I16 = 3
 GGML_TYPE_I32 = 4
@@ -72,13 +69,11 @@ WTYPE_NAMES = {
 WTYPES = {
     0: GGML_TYPE_F32,
     1: GGML_TYPE_F16,
-    2: GGML_TYPE_Q4_0,
-    3: GGML_TYPE_Q4_1,
+    2: GGML_TYPE_I8,
+    3: GGML_TYPE_I16,
 }
 
 GGML_BLCK_SIZE = {
-    GGML_TYPE_Q4_0: QK,
-    GGML_TYPE_Q4_1: QK,
     GGML_TYPE_I8: 1,
     GGML_TYPE_I16: 1,
     GGML_TYPE_I32: 1,
@@ -87,8 +82,6 @@ GGML_BLCK_SIZE = {
 }
 
 GGML_TYPE_SIZE = {
-    GGML_TYPE_Q4_0: 4 + QK // 2,
-    GGML_TYPE_Q4_1: 4 * 2 + QK // 2,
     GGML_TYPE_I8: 1,
     GGML_TYPE_I16: 2,
     GGML_TYPE_I32: 4,
@@ -105,7 +98,6 @@ HPARAMS = [
     "n_head",  # int32
     "n_layer",  # int32
     "n_rot",  # int32
-    "f16",  # int32
 ]
 
 

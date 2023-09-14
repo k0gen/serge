@@ -51,7 +51,6 @@
 import os
 import struct
 
-
 QK = 32
 
 GGML_TYPE_Q4_0 = 0

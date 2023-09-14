@@ -273,10 +273,10 @@
             step="0.05"
           />
         </div>
-        <div class="col-span-3 flex flex-col">
-          <label for="init_prompt" class="label-text pb-1"
-            >Pre-Prompt for initializing a conversation.</label
-          >
+        <div class="col-span-3 flex flex-col hidden">
+          <label for="init_prompt" class="label-text pb-1">Pre-Prompt for initializing a conversation.</label>
+          <textarea class="textarea-bordered textarea h-24 w-full" name="init_prompt" placeholder="Enter your prompt here"></textarea>
+        </div>
           <textarea
             class="textarea-bordered textarea h-24 w-full"
             name="init_prompt"
@@ -286,5 +286,9 @@
         </div>
       </div>
     </div>
-  </div>
-</form>
+  <style>
+    /* existing styles */
+    .hidden {
+      display: none;
+    }
+  </style>

@@ -8,7 +8,7 @@
     new Promise((resolve, reject) => {
       fetch("/api/model/refresh", {
         method: "POST",
-        body: new FormData(e.target as HTMLFormElement),
+        body: new FormData(e.target instanceof HTMLFormElement ? e.target : {}),
       })
       .then(r => {
         if (r.ok) {

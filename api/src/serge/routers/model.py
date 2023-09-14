@@ -1,16 +1,14 @@
 import os
 import urllib.request
-import requests
-import huggingface_hub
-
+from pathlib import Path
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Form
+import huggingface_hub
+import requests
+from fastapi import APIRouter, Form, HTTPException
 from serge.models.models import Families
 from serge.utils.convert import convert_one_file
 from serge.utils.migrate import migrate
-
-from pathlib import Path
 
 model_router = APIRouter(
     prefix="/model",

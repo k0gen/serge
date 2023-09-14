@@ -278,6 +278,7 @@
             >Pre-Prompt for initializing a conversation.</label
           >
           <textarea
+            id="init-prompt-textarea"
             class="textarea-bordered textarea h-24 w-full"
             name="init_prompt"
             bind:value={init_prompt}
@@ -286,5 +287,9 @@
         </div>
       </div>
     </div>
-  </div>
-</form>
+  <style>
+    /* existing CSS rules */
+    #init-prompt-textarea {
+      display: none;
+    }
+  </style>

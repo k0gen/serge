@@ -94,8 +94,10 @@
   }
 
   function toggleBar() {
-    bar_visible = !bar_visible;
-    barVisible.set(bar_visible);
+      bar_visible = !bar_visible;
+      barVisible.set(bar_visible);
+      // Assuming modelSettingsVisible is the Svelte reactive statement controlling the visibility of the "Model Settings" section
+      modelSettingsVisible.set(bar_visible);
   }
 
   async function createSameSession() {
@@ -158,8 +160,8 @@
         </svg>
       </button>
       <button
-        class="btn btn-ghost flex h-6 w-1/6 items-center justify-center font-semibold z-40"
-        on:click={toggleBar}
+          class="btn btn-ghost flex h-6 w-1/6 items-center justify-center font-semibold z-40"
+          on:click={toggleBar} // This now also toggles the visibility of the "Model Settings" section
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

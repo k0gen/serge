@@ -1,32 +1,31 @@
 <script lang="ts">
   import { invalidate, invalidateAll } from "$app/navigation";
 
-  let dialogTag: HTMLDialogElement;
-  let isLoading = false;
-
-  let link =
-    "https://raw.githubusercontent.com/serge-chat/serge/main/api/src/serge/data/models.json";
-
-  const handleRefresh = async (e: Event) => {
-    isLoading = true;
-    const r = await fetch("/api/model/refresh", {
-      method: "POST",
-      body: new FormData(e.target as HTMLFormElement),
+  let isProcessing = false;
+  
+  const handleRefresh = (e) => {
+    isProcessing = true;
+    new Promise((resolve, reject) => {
+      fetch("/api/model/refresh", {
+        method: "POST",
+        body: new FormData(e.target instanceof HTMLFormElement ? e.target : {}),
+      })
+      .then(r => {
+        if (r.ok) {
+          return invalidate("/api/model/all");
+        } else {
+          throw new Error("Error refreshing models");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
+        isProcessing = false;
+      });
     });
-
-    if (r.ok) {
-      await invalidate("/api/model/all");
-      dialogTag.close();
-    } else {
-      console.error("Error refreshing models");
-    }
-    isLoading = false;
   };
 </script>
-
-<button class="btn-outline btn" on:click={() => dialogTag.showModal()}
-  >Refresh Models</button
->
 <dialog bind:this={dialogTag} class="modal">
   <form method="dialog" class="modal-box">
     <button class="btn-ghost btn-sm btn-circle btn absolute right-2 top-2"
@@ -45,8 +44,8 @@
       />
       <div class="modal-action">
         <!-- if there is a button in form, it will close the modal -->
-        <button type="submit" class="btn" disabled={isLoading}>
-          {#if isLoading}
+        <button type="submit" class="btn" disabled={isProcessing}>
+          {#if isProcessing}
             <span class="loading loading-spinner" />
           {/if}
           Refresh
